@@ -36,40 +36,35 @@ class Solution
     Node* segregate(Node *head) {
         
         // Add code here
-        vector<int> v;
-        Node *p = head;
-        while(p ){
-            v.push_back(p->data);
-            p= p->next;
-        }
-        int n = v.size();
-        int a=0, b=0, i=0;
-        int low =-1, mid =0, high =n-1;
-        while(i<n){
-            if(v[i] ==0){
+        int a=0, b=0, c=0;
+        Node* p = head;
+        while(p!=NULL){
+            if(p->data==0){
                 a++;
             }
-            else if(v[i] == 1){
+            else if(p->data == 1 ){
                 b++;
             }
-            i++;
+            else{
+                c++;
+            }
+            p = p->next;
         }
-        for(int i=0; i<n; i++){
+        p = head;
+        while(p!=NULL){
             if(a>0){
-                v[i] = 0;
+                p->data = 0;
                 a--;
             }
             else if(b>0){
-                v[i] = 1;
+                p->data = 1;
                 b--;
             }
-            else v[i] = 2;
-        }
-        p = head; i=0;
-        while(p){
-            p->data = v[i];
+            else{
+                p->data = 2;
+                c--;
+            }
             p = p->next;
-            i++;
         }
         return head;
         
