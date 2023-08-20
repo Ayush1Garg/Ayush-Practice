@@ -10,22 +10,26 @@ using namespace std;
 class Solution{
   public:
     /*You are required to complete this method */
+    void solve(int i, string &str, int n, int &ans){
+        if(i==n) return;
+        if(str[i]<'0' || str[i]>'9'){
+            ans = -1;
+            return;
+        }
+        ans = ans*10 + (str[i] - '0');
+        solve(i+1,str,n,ans);
+    }
     int atoi(string str) {
         //Your code here
-        int ans=0;
-        int i=0, p =1;
+        int ans = 0;
+        int i = 0, len = str.length(), mul = 1;
         if(str[i]=='-'){
-            p = -1;
+            mul = -1;
             i++;
         }
-        for( i; i<str.length(); i++){
-            int x = str[i] - '0';
-            if(x<0 || x>9)
-            return -1;
-            ans = ans*10 + x;
-        }
-        return p*ans;
-        
+        solve(i,str,len,ans);
+        if(ans==-1) return ans;
+        return mul*ans;
     }
 };
 
