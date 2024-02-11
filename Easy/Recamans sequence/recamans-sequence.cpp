@@ -9,30 +9,21 @@ using namespace std;
 
 class Solution{
 public:
-    void solve(vector<int>& v, int n, unordered_map<int,int>& mp, int i){
-        if(i>=n){
-            return;
-        }
-        int c = (i+1);
-        if( (v[i]-c)>0 && mp.find(v[i]-c)==mp.end()){
-            v.push_back(v[i]-c);
-            mp[v[i]-c]++;
-        }
-        else{
-            v.push_back(v[i]+c);
-            mp[v[i]+c]++;
-        }
-        solve(v,n,mp,i+1);
-    }
-
     vector<int> recamanSequence(int n){
         // code here
-        vector<int> v;
-        v.push_back(0);
-        unordered_map<int,int> mp;
-        mp[0]++;
-        solve(v,n,mp,0);
-        return v;
+        vector<int> ans(n,0);
+        unordered_map<int,bool> mp;
+        mp[0] = true;
+        for(int i=1; i<n; i++){
+            if( ( (ans[i-1] - i) > 0 ) && !mp[(ans[i-1] - i)] ){
+                ans[i] = ans[i-1] - i;
+            }
+            else{
+                ans[i] = ans[i-1] + i;
+            }
+            mp[ans[i]] = true;
+        }
+        return ans;
     }
 };
 
