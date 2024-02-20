@@ -24,10 +24,9 @@ public:
         }
         return dp[i] = false;
     }
-    int wordBreak(string A, vector<string> &B) {
+    int wordBreak(int n, string A, vector<string> &B) {
         //code here
         unordered_map<string,int> mp;
-        int n=B.size();
         for(int i=0; i<n; i++){
             mp[B[i]]++;
         }
@@ -37,6 +36,7 @@ public:
     }
 };
 
+
 //{ Driver Code Starts.
 
 int main(){
@@ -45,16 +45,16 @@ int main(){
     while(t--){
         int n;
         cin>>n;
-        vector<string> dict;
+        vector<string> dictionary;
         for(int i=0;i<n;i++){
             string S;
             cin>>S;
-            dict.push_back(S);
+            dictionary.push_back(S);
         }
-        string line;
-        cin>>line;
+        string s;
+        cin>>s;
         Solution ob;
-        cout<<ob.wordBreak(line, dict)<<"\n";
+        cout<<ob.wordBreak(n, s, dictionary)<<"\n";
     }
 }
 
