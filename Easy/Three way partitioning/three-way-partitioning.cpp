@@ -10,40 +10,24 @@ using namespace std;
 
 class Solution{   
 public:
-
-    void swap(vector<int>& v, int i, int j){
-        int temp = v[i];
-        v[i] = v[j];
-        v[j] = temp;
-    }
-    //Function to partition the array around the range such
+    //Function to partition the array around the range such 
     //that array is divided into three parts.
-    void threeWayPartition(vector<int>& arr,int a, int b)
+    void threeWayPartition(vector<int>& array,int a, int b)
     {
-        // code here 
-        int n = arr.size();
-        int low =0, high = n-1;
-        for(int i=0; i<=high; i++){
-            if(arr[i]<a){
-                swap(arr,i,low);
+        int n = array.size();
+        int low = 0, mid = 0, high = n - 1;
+        while (mid <= high) {
+            if (array[mid] < a) {
+                swap(array[low], array[mid]);
                 low++;
-            }
-            else if(arr[i]>b){
-                swap(arr,i,high);
-                i--;
+                mid++;
+            } else if (array[mid] > b) {
+                swap(array[mid], array[high]);
                 high--;
+            } else {
+                mid++;
             }
         }
-        // int i = -1, j = -1, k = 0;
-        // while(i==-1 && j==-1 && k<n){
-        //     if(arr[k]==a)
-        //     i = k;
-        //     else if(arr[k]==b)
-        //     j = k;
-        //     k++;
-        // }
-        // swap(arr[i],arr[low]);
-        // swap(arr[j],arr[mid-1]);
     }
 };
 
