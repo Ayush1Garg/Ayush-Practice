@@ -1,36 +1,22 @@
 class Solution {
 public:
     vector<string> commonChars(vector<string>& words) {
-        vector<int> last = count(words[0]);
-        for (int i = 1; i < words.size(); i++) {
-            last = intersection(last, count(words[i]));
-        }
-        
-        vector<string> result;
-        for (int i = 0; i < 26; i++) {
-            while (last[i] > 0) {
-                result.push_back(string(1, 'a' + i));
-                last[i]--;
+        vector<int> count(26, INT_MAX);
+        vector<string> res;
+        for (const auto& w : words) {
+            vector<int> counts(26, 0);
+            for (const auto& c : w) {
+                counts[c - 'a']++;
+            }
+            for (int i = 0; i < 26; i++) {
+                count[i] = min(count[i], counts[i]);
             }
         }
-        
-        return result;
-    }
-    
-private:
-    vector<int> count(const string& str) {
-        vector<int> frequency(26, 0);
-        for (char c : str) {
-            frequency[c - 'a']++;
-        }
-        return frequency;
-    }
-    
-    vector<int> intersection(const vector<int>& a, const vector<int>& b) {
-        vector<int> t(26, 0);
         for (int i = 0; i < 26; i++) {
-            t[i] = min(a[i], b[i]);
+            for (int j = 0; j < count[i]; j++) {
+                res.push_back(string(1, 'a' + i));
+            }
         }
-        return t;
+        return res;
     }
 };
