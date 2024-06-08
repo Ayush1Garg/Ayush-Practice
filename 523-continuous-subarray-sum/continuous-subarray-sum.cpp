@@ -1,6 +1,7 @@
 class Solution {
 public:
     bool checkSubarraySum(vector<int>& nums, int k) {
+        ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
         int n = nums.size();
         int sum = 0, ans = 0;
         unordered_map<int,int> mp;
