@@ -1,12 +1,11 @@
 class Solution {
 public:
-    vector<int> relativeSortArray(vector<int>& arr, vector<int>& arr2) {
-        int n = arr.size(), m = arr2.size();
+    vector<int> relativeSortArray(vector<int>& arr1, vector<int>& arr2) {
+        int n = arr1.size(), m = arr2.size();
         if(n==m) return arr2;
         ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
         unordered_map<int,int> freq1;
         unordered_map<int,bool> hash2;
-        vector<int> arr1 = arr;
         for(int i=0; i<m; i++){
             hash2[arr2[i]] = true;
         }
