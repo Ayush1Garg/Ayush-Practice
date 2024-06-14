@@ -1,17 +1,30 @@
 class Solution {
 public:
-    int minIncrementForUnique(vector<int>& nums) {
-        int n = nums.size();
-        if(n==1) return 0;
-        ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
-        sort(nums.begin(),nums.end());
-        int ans = 0;
-        for(int i=1; i<n; i++){
-            if(nums[i]<=nums[i-1]){
-                ans += nums[i-1] - nums[i] + 1;
-                nums[i] = nums[i-1] + 1;
-            }
+    static int minIncrementForUnique(vector<int>& nums) {
+        int freq[200001]={0}, x0=1e5, n=nums.size();
+        for(int x: nums){
+            freq[x]++;
+            x0=min(x0, x);
         }
-        return ans;
+        int cnt=0, inc=0;
+        for(int x=x0; cnt<n; x++){
+            int f=freq[x];
+            cnt+=(f!=0);
+            if (f<=1) continue;
+            freq[x+1]+=(f-1);
+            inc+=(f-1);
+        }
+        
+        return inc;
     }
 };
+
+
+
+
+auto init = []() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    return 'c';
+}();
