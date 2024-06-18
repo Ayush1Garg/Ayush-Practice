@@ -1,27 +1,24 @@
+#define sort(a) sort(begin(a), end(a))
+#define opt() ios::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 class Solution {
 public:
     int maxProfitAssignment(vector<int>& difficulty, vector<int>& profit, vector<int>& worker) {
-        ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
-        int maxDifficulty = *max_element(difficulty.begin(), difficulty.end());
-        vector<int> maxProfitUpToDifficulty(maxDifficulty + 1, 0);
-
-        for (int i = 0; i < difficulty.size(); ++i) {
-            maxProfitUpToDifficulty[difficulty[i]] = max(maxProfitUpToDifficulty[difficulty[i]], profit[i]);
+        opt();
+        int res = 0, j = 0, best = 0;
+        vector<pair<int, int>> temp;
+        for(int i = 0; i < worker.size(); ++i) {
+            temp.push_back({difficulty[i], profit[i]});
         }
 
-        for (int i = 1; i <= maxDifficulty; ++i) {
-            maxProfitUpToDifficulty[i] = max(maxProfitUpToDifficulty[i], maxProfitUpToDifficulty[i - 1]);
-        }
-
-        int totalProfit = 0;
-        for (int ability : worker) {
-            if (ability > maxDifficulty) {
-                totalProfit += maxProfitUpToDifficulty[maxDifficulty];
-            } else {
-                totalProfit += maxProfitUpToDifficulty[ability];
+        sort(temp); sort(worker);
+        for(int work : worker) {
+            while(work >= temp[j].first && j < worker.size()) {
+                best = max(best, temp[j++].second);
             }
+            
+            res += best;
         }
 
-        return totalProfit;
+        return res;
     }
 };
