@@ -1,6 +1,8 @@
 class Solution {
 public:
     int minDays(vector<int>& bloomDay, int m, int k) {
+        ios::sync_with_stdio(0);
+        cin.tie(0);
         if ((long long)m * k > bloomDay.size()) {
             return -1;
         }
@@ -21,8 +23,6 @@ public:
 
 private:
     bool canMakeBouquets(vector<int>& bloomDay, int m, int k, int day) {
-        ios::sync_with_stdio(0);
-        cin.tie(0);
         int total = 0;
         for (int i = 0; i < bloomDay.size(); i++) {
             int count = 0;
