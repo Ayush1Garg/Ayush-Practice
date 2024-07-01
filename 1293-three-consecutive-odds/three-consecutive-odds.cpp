@@ -3,7 +3,7 @@ public:
     bool threeConsecutiveOdds(vector<int>& arr) {
         if(arr.size()==1||arr.size()==2)
         return false;
-        ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
+        // ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
         for(int i=0;i<arr.size()-2;i++)
         {
             if(arr[i]%2!=0)
