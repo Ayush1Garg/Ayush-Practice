@@ -2,16 +2,19 @@ class Solution {
 public:
     static vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
         if (nums1.size()>nums2.size()) return intersect(nums2, nums1);
-        unordered_map<int, int> freq;
-        int sz=nums1.size();
-        freq.reserve(sz);
-        for(int x: nums1) freq[x]++;
-        vector<int> ans;
-        ans.reserve(sz);
-        for(int x: nums2){
-            if (freq[x]-->0) ans.push_back(x);
+        vector<int> res;
+        unordered_map<int, int> box;
+        for (int num : nums1)
+            box[num]++;
+        for (int i = 0; i < nums2.size(); ++i) {
+            if (box[nums2[i]] > 0) {
+                res.push_back(nums2[i]);
+                box[nums2[i]]--;
+            } else {
+                continue;
+            }
         }
-        return ans;   
+        return res; 
     }
 };
 
