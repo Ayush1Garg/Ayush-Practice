@@ -1,58 +1,33 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
 class Solution {
-    bool isNextCrit(ListNode *node){
-        bool localmax =  (node->next->val > node->val && node->next->val > node->next->next->val);
-        bool localmin =  (node->next->val < node->val && node->next->val < node->next->next->val);
-        return localmax || localmin;
-    }
 public:
     vector<int> nodesBetweenCriticalPoints(ListNode* head) {
-        vector<int> v(2);
-        v[0] = INT_MAX;
-        v[1] = INT_MIN;
-        ListNode *p = head, *q = head;
-        int dist = 0;
-        while(q && q->next && q->next->next){
-            cout<<q->val;
-            if(isNextCrit(q)){
-                cout<<"/ ";
-                break;
-            }
-            cout<<" ";
-            q = q->next;
+        ios_base::sync_with_stdio(false);
+        if(head==NULL || head->next==NULL ||head->next->next==NULL){
+            return {-1,-1};
         }
-        p = q;
-        q = q->next;
-        dist = 1;
-        while(q && q->next && q->next->next){
-            cout<<q->val;
-            if(isNextCrit(q)){
-                v[0] = min(v[0],dist);
-                if(v[1]==INT_MIN){
-                    v[1] = dist;
-                }
-                else{
-                    v[1] += dist;
-                }
-                p = q;
-                dist = 0;
-                cout<<"/ ";
+        ListNode* temp2=head->next;
+        ListNode* temp3=head->next->next;
+        vector<int>v;
+        int i=2;
+        while(temp3){
+            if((head->val<temp2->val)&&(temp3->val<temp2->val)){
+                v.push_back(i);
             }
-            else cout<<" ";
-            q = q->next;
-            dist++;
+            else if((head->val>temp2->val)&&(temp3->val>temp2->val)){
+                v.push_back(i);
+            }
+            i++;
+            head=temp2;
+            temp2=temp3;
+            temp3=temp3->next;
         }
-        if(v[0]==INT_MAX) v[0] = -1;
-        if(v[1]==INT_MIN) v[1] = -1;
-        return v;
+        if(v.size()<2){
+            return {-1,-1};
+        }
+        int mini=INT_MAX;
+        for(int i=1;i<v.size();i++){
+            mini=min(mini,(v[i]-v[i-1]));
+        }
+        return {mini,(v[v.size()-1]-v[0])};
     }
 };
