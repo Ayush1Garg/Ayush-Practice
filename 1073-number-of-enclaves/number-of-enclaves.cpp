@@ -1,5 +1,10 @@
 class Solution {
 public:
+    Solution() {
+        std::ios_base::sync_with_stdio(false);
+        std::cin.tie(NULL);
+        std::cout.tie(NULL);
+    }
     void dfs(int i, int j, vector<vector<int>>& board, int n, int m){
         if(i<0 || j<0 || i==n || j==m || board[i][j]!=1) return;
         board[i][j] = 0;
