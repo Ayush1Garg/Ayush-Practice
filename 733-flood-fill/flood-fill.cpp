@@ -12,9 +12,9 @@ public:
     vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
         if(image[sr][sc]==color) return image;
         ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
-        vector<vector<int>> ans = image;
+        // vector<vector<int>> ans = image;
         int prevcol = image[sr][sc];
-        dfs(sr,sc,ans,color,prevcol);
-        return ans;
+        dfs(sr,sc,image,color,prevcol);
+        return image;
     }
 };
