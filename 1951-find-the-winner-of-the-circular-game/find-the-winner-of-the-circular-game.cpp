@@ -1,17 +1,16 @@
 class Solution {
 public:
-    static int findTheWinner(int n, int k) {
-       if (n==1) return 1;
-       return (findTheWinner(n-1, k)+(k-1))%n+1;
+    int findTheWinner(int n, int k) {
+        queue<int> q;
+        for(int i=1;i<=n;++i){q.push(i);}
+        while(q.size()>=2){
+            for(int i=0;i<k-1;++i){
+                int f = q.front();
+                q.pop();
+                q.push(f);
+            }
+            q.pop();
+        }
+        return q.front();
     }
 };
-
-
-
-
-auto init = []() {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
-    return 'c';
-}();
