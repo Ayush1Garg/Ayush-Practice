@@ -1,57 +1,43 @@
 class Solution {
 public:
     int maximumGain(string s, int x, int y) {
-        ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
-        int n = s.size(), ans = 0;
-        for(int i = 0; i < n; i++) {
-            if(s[i] != 'a' && s[i] != 'b') continue;
-            int j = i;
-            string t = "";
-            while(j < n && (s[j] == 'a' || s[j] == 'b')) {
-                t += s[j];
-                j++;
-            }
-            ans += max(processAB(t, x, y), processBA(t, x, y));
-            i = j - 1;
+        // Ensure "ab" always has more points than "ba"
+        if (x < y) {
+            // Swap points
+            int temp = x;
+            x = y;
+            y = temp;
+            // Reverse the string to maintain logic
+            reverse(s.begin(), s.end());
         }
-        return ans;
-    }
-    
-    int processAB(string& s, int x, int y) { //process AB first
-        vector<char> stk;
-        int ans = 0;
-        for(int i = 0; i < s.size(); i++) {
-            if(stk.size() > 0 && stk.back() == 'a' && s[i] == 'b') {
-                stk.pop_back();
-                ans += x;
+
+        int aCount = 0, bCount = 0, totalPoints = 0;
+
+        for (int i = 0; i < s.size(); ++i) {
+            char currentChar = s[i];
+
+            if (currentChar == 'a') {
+                ++aCount;
+            } else if (currentChar == 'b') {
+                if (aCount > 0) {
+                    // Can form "ab", remove it and add points
+                    --aCount;
+                    totalPoints += x;
+                } else {
+                    // Can't form "ab", keep 'b' for potential future "ba"
+                    ++bCount;
+                }
             } else {
-                stk.push_back(s[i]);
+                // Non 'a' or 'b' character encountered
+                // Calculate points for any remaining "ba" pairs
+                totalPoints += min(bCount, aCount) * y;
+                // Reset counters for next segment
+                aCount = bCount = 0;
             }
         }
-        int a = 0, b = 0;
-        for(int i = 0; i < stk.size(); i++) {
-            if(stk[i] == 'a') a++;
-            else b++;
-        }
-        return min(a, b) * y + ans;
-    }
-    
-    int processBA(string& s, int x, int y) { //process AB first
-        vector<char> stk;
-        int ans = 0;
-        for(int i = 0; i < s.size(); i++) {
-            if(stk.size() > 0 && stk.back() == 'b' && s[i] == 'a') {
-                stk.pop_back();
-                ans += y;
-            } else {
-                stk.push_back(s[i]);
-            }
-        }
-        int a = 0, b = 0;
-        for(int i = 0; i < stk.size(); i++) {
-            if(stk[i] == 'a') a++;
-            else b++;
-        }
-        return min(a, b) * x + ans;
+        // Calculate points for any remaining "ba" pairs at the end
+        totalPoints += min(bCount, aCount) * y;
+
+        return totalPoints;
     }
 };
