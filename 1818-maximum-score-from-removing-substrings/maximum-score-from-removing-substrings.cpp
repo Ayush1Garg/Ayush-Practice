@@ -1,6 +1,7 @@
 class Solution {
 public:
     int maximumGain(string s, int x, int y) {
+        ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
         int n = s.size(), ans = 0;
         for(int i = 0; i < n; i++) {
             if(s[i] != 'a' && s[i] != 'b') continue;
