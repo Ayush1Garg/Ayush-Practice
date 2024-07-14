@@ -1,52 +1,54 @@
-
-
 class Solution {
 public:
-    string countOfAtoms(string formula) {
-        stack<map<string, int>> stk;
-        stk.push(map<string, int>());
-        int n = formula.size();
-        for (int i = 0; i < n;) {
-            if (formula[i] == '(') {
-                stk.push(map<string, int>());
-                i++;
-            } else if (formula[i] == ')') {
-                auto top = stk.top();
-                stk.pop();
-                i++;
-                int i_start = i;
-                while (i < n && isdigit(formula[i])) {
-                    i++;
+    string countOfAtoms(string exp) {
+        map<string, int> atoms;
+        string ans;
+        int cnt = 0, mult = 1;
+        stack<int> st;
+        
+        for (int i = size(exp) - 1; i >= 0; i--) {
+            if (isalpha(exp[i]) and islower(exp[i])) {
+                int len = 2;
+                i--;
+                
+                while (i >= 0 and islower(exp[i])) {
+                    i--;
+                    len++;
                 }
-                int multiplier = i > i_start ? stoi(formula.substr(i_start, i - i_start)) : 1;
-                for (auto &p : top) {
-                    stk.top()[p.first] += p.second * multiplier;
+                
+                string atom = exp.substr(i, len);
+                atoms[atom] += max(cnt, 1) * mult;
+                cnt = 0;
+            } else if (isalpha(exp[i]) and isupper(exp[i])) {
+                string atom(1, exp[i]);
+                atoms[atom] += max(cnt, 1) * mult;
+                cnt = 0;
+            } else if (isdigit(exp[i])) {
+                cnt = exp[i] - '0';
+                int p = 10;
+                
+                while (i - 1 >= 0 and isdigit(exp[i - 1])) {
+                    cnt += p * (exp[--i] - '0');
+                    p *= 10;
                 }
+            } else if (exp[i] == ')') {
+                st.push(mult);
+                mult *= max(cnt, 1);
+                cnt = 0;
             } else {
-                int i_start = i;
-                i++;
-                while (i < n && islower(formula[i])) {
-                    i++;
-                }
-                string element = formula.substr(i_start, i - i_start);
-                i_start = i;
-                while (i < n && isdigit(formula[i])) {
-                    i++;
-                }
-                int count = i > i_start ? stoi(formula.substr(i_start, i - i_start)) : 1;
-                stk.top()[element] += count;
+                mult = st.top();
+                st.pop();
             }
         }
-        auto &counts = stk.top();
-        vector<pair<string, int>> elements(counts.begin(), counts.end());
-        sort(elements.begin(), elements.end());
-        string result;
-        for (auto &p : elements) {
-            result += p.first;
-            if (p.second > 1) {
-                result += to_string(p.second);
+        
+        for (auto [atom, count]: atoms) {
+            ans += atom;
+            
+            if (count > 1) {
+                ans += to_string(count);
             }
         }
-        return result;
+        
+        return ans;
     }
 };
