@@ -6,39 +6,64 @@
  *     TreeNode *right;
  *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
  *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left),
+ * right(right) {}
  * };
  */
-#define MX 100001
-#pragma GCC optimize("03")
-#pragma GCC target ("avx")
-#pragma GCC target ("-fsplit-loops")
-TreeNode* Nodes[MX];
-TreeNode nodes[MX];
-int P[MX];
-int V[MX];
-int cnt = 0;
-int idx = 0;
-TreeNode* p;
-TreeNode* c;
-auto _ = [](){
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL), cout.tie(NULL);
-    return 0;
-}();
 class Solution {
 public:
-    TreeNode* createBinaryTree(const vector<vector<int>>& descriptions) {
-        while(cnt) Nodes[V[--cnt]] = nullptr, P[V[cnt]] = 0;
-        idx = cnt;
-        for(const vector<int> &desc : descriptions){
-            int a = desc[0], b = desc[1];
-            p = Nodes[a] ? Nodes[a] : (Nodes[a] = &(nodes[idx++] = TreeNode(V[cnt++] = a)));
-            c = Nodes[b] ? Nodes[b] : (Nodes[b] = &(nodes[idx++] = TreeNode(V[cnt++] = b)));
-            P[b] = a;
-            if(desc[2]) p -> left = c; else p -> right = c;
+    TreeNode* createBinaryTree(vector<vector<int>>& descriptions) {
+        // Maps values to TreeNode pointers
+        unordered_map<int, TreeNode*> nodeMap;
+        // Stores values which are children in the descriptions
+        unordered_set<int> children;
+
+        // Iterate through descriptions to create nodes and set up tree
+        // structure
+        for (const auto& description : descriptions) {
+            // Extract parent value, child value, and whether it is a
+            // left child (1) or right child (0)
+            int parentValue = description[0];
+            int childValue = description[1];
+            bool isLeft = description[2];
+
+            // Create parent and child nodes if not already created
+            if (nodeMap.count(parentValue) == 0) {
+                nodeMap[parentValue] = new TreeNode(parentValue);
+            }
+            if (nodeMap.count(childValue) == 0) {
+                nodeMap[childValue] = new TreeNode(childValue);
+            }
+
+            // Attach child node to parent's left or right branch
+            if (isLeft) {
+                nodeMap[parentValue]->left = nodeMap[childValue];
+            } else {
+                nodeMap[parentValue]->right = nodeMap[childValue];
+            }
+
+            // Mark child as a child in the set
+            children.insert(childValue);
         }
-        for(const vector<int> &desc : descriptions) if(!P[desc[0]]) return Nodes[desc[0]];
-        return NULL;
+
+        // Find and return the root node
+        for (auto& entry : nodeMap) {
+            auto& value = entry.first;
+            auto& node = entry.second;
+            // Root node found
+            if (children.find(value) == children.end()) {
+                return node;
+            }
+        }
+
+        // Should not occur according to problem statement
+        return nullptr;
     }
 };
+
+auto init = []() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    return 'c';
+}();
