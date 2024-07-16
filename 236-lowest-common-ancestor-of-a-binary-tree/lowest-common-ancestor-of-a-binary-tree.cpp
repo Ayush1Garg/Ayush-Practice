@@ -8,14 +8,18 @@
  * };
  */
 class Solution {
-public:
-    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+    TreeNode* LCA(TreeNode* root, TreeNode* p, TreeNode* q){
         if(!root) return NULL;
         if(root==p || root==q) return root;
-        TreeNode* left = lowestCommonAncestor(root->left,p,q);
-        TreeNode* right = lowestCommonAncestor(root->right,p,q);
+        TreeNode* left = LCA(root->left,p,q);
+        TreeNode* right = LCA(root->right,p,q);
         if(left==NULL) return right;
         if(right==NULL) return left;
         return root;
+    }
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
+        return LCA(root,p,q);
     }
 };
