@@ -10,39 +10,31 @@
  * };
  */
 class Solution {
-    void help(TreeNode* node, TreeNode* parent, TreeNode* root, set<int>& s, vector<TreeNode*>&ans, int dir = 1 ){
-        if(!node) return;
-        if(s.find(node->val)!=s.end()){
-                if(!parent || root==node){
-                    help(node->left,NULL,node->left,s,ans,0);
-                    help(node->right,NULL,node->right,s,ans,1);
-                }
-                else{
-                    if(dir){
-                        parent->right = NULL;
-                    }
-                    else{
-                        parent->left = NULL;
-                    }
-                    help(node->left,NULL,node->left,s,ans,0);
-                    help(node->right,NULL,node->right,s,ans,1);
-                }
-        }
-        else{
-            if(node==root) ans.push_back(node);
-            help(node->left,node,root,s,ans,0);
-            help(node->right,node,root,s,ans,1);
-        }
-    }
 public:
     vector<TreeNode*> delNodes(TreeNode* root, vector<int>& to_delete) {
-        ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
-        vector<TreeNode*> ans;
-        set<int> s;
-        for(int i=0; i<to_delete.size(); i++){
-            s.insert(to_delete[i]);
+        vector<TreeNode*> rst;
+        unordered_set<int> removeSet(to_delete.begin(), to_delete.end());
+
+        root = dfs(root, removeSet, rst);
+        if (root) rst.push_back(root);
+        return rst;
+    }
+
+
+    TreeNode* dfs(TreeNode* root, unordered_set<int>& removeSet, vector<TreeNode*>& rst){
+        if (root==nullptr) return nullptr;
+        auto leftNode = dfs(root->left, removeSet, rst);
+        auto rightNode = dfs(root->right, removeSet, rst);
+
+        root->left = leftNode;
+        root->right = rightNode;
+
+        if (removeSet.count(root->val)){
+            if (root->left) rst.push_back(root->left);
+            if (root->right) rst.push_back(root->right);
+            delete root;
+            return nullptr;
         }
-        help(root,NULL,root,s,ans);
-        return ans;
+        return root;
     }
 };
