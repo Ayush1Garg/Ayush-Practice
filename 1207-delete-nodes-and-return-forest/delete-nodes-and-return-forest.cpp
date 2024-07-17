@@ -12,6 +12,7 @@
 class Solution {
 public:
     vector<TreeNode*> delNodes(TreeNode* root, vector<int>& to_delete) {
+        ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
         vector<TreeNode*> rst;
         unordered_set<int> removeSet(to_delete.begin(), to_delete.end());
 
