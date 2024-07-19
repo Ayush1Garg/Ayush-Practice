@@ -1,6 +1,7 @@
 class Solution {
 public:
     vector<int> luckyNumbers (vector<vector<int>>& m) {
+        ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
         vector<int> ans;
         unordered_map<int, int> mp;
         for(int i = 0;i < m.size();i++){
