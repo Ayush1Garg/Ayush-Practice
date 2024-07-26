@@ -1,52 +1,41 @@
 class Solution {
 public:
     int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold) {
-        ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
-        vector<vector<int>> dist(n, vector<int>(n, INT_MAX));
-
-        for (int i = 0; i < n; i++) 
-        {
-            dist[i][i] = 0;
+        vector<vector<int>>matrix(n,vector<int>(n,1e9));
+        for(int i=0;i<edges.size();i++){
+            int u=edges[i][0];
+            int v=edges[i][1];
+            int w=edges[i][2];
+            matrix[u][v]=w;
+            matrix[v][u]=w;
         }
-
-        for (auto edge: edges) 
-        {
-            dist[edge[0]][edge[1]] = edge[2];
-            dist[edge[1]][edge[0]] = edge[2];
+        for(int i=0;i<n;i++){
+            matrix[i][i]=0;
         }
-        
-        for (int k = 0; k < n; k++)
-        {
-            for (int i = 0; i < n; i++)
-            {
-                for (int j = 0; j < n; j++)
-                {
-                    if (dist[i][k] < INT_MAX && dist[k][j] < INT_MAX)
-                    {
-                        dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
-                    }
+        for(int k=0;k<n;k++){
+            for(int i=0;i<n;i++){
+                for(int j=0;j<n;j++){
+                    matrix[i][j]=min(matrix[i][j],matrix[i][k]+matrix[k][j]);
                 }
             }
         }
-
-        int ansNode;
-        int cityCnt = INT_MAX;
-        for (int i = n - 1; i >= 0; i--)
-        {
-            int cnt = 0;
-            for (int j = 0; j < n; j++)
-            {
-                if (dist[i][j] <= distanceThreshold && i != j)
-                    cnt++;
+        vector<int>dist(n,0);
+        for(int i=0;i<n;i++){
+            int c=0;
+            for(int j=0;j<n;j++){
+                 if(matrix[i][j]<=distanceThreshold){
+                    c++;
+                 }
             }
-
-            if (cnt < cityCnt)
-            {
-                ansNode = i;
-                cityCnt = cnt;
-            }
+            dist[i]=c;
         }
-
-        return ansNode;
+        int min=dist[0],node=0;
+        for(int i=1;i<n;i++){
+          if(dist[i]<=min){
+            min=dist[i];
+            node=i;
+          }
+        }
+        return node;
     }
 };
