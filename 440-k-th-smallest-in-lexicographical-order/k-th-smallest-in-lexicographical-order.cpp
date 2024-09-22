@@ -1,35 +1,27 @@
 class Solution {
-public:
-    int findKthNumber(int n, int k) {
-        ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
-        int currentPrefix = 1;
-        --k;  // Decrement k to handle zero-based indexing
-        
-        while (k > 0) {
-            int count = countNumbersWithPrefix(currentPrefix, n);
-            if (k >= count) {
-                ++currentPrefix;  // Move to the next prefix
-                k -= count;
-            } else {
-                currentPrefix *= 10;  // Go deeper in the current prefix
-                --k;
+    public:
+        int findKthNumber(long n, int k) {
+            auto getGap = [&n](long a, long b) {
+                long gap = 0;
+                while (a <= n) {
+                    gap += min(n + 1, b) - a;
+                    a *= 10;
+                    b *= 10;
+                }
+                return gap;
+            };
+            long currNum = 1;
+            for (int i = 1; i < k;) {
+                long gap = getGap(currNum, currNum + 1);
+                if (i + gap <= k) {
+                    i += gap;
+                    ++currNum;
+                }
+                else{
+                    ++i;
+                    currNum *= 10;
+                }
             }
+            return currNum;
         }
-        
-        return currentPrefix;
-    }
-
-private:
-    int countNumbersWithPrefix(int prefix, int n) {
-        long long firstNumber = prefix, nextNumber = prefix + 1;
-        int totalCount = 0;
-
-        while (firstNumber <= n) {
-            totalCount += static_cast<int>(min(n + 1LL, nextNumber) - firstNumber);
-            firstNumber *= 10;
-            nextNumber *= 10;
-        }
-
-        return totalCount;
-    }
 };
