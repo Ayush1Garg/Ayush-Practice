@@ -93,33 +93,49 @@ struct Node {
 };
 */
 class Solution {
+    void inorder(Node *root, vector<int> &arr){
+        if(!root) return;
+        inorder(root->left,arr);
+        arr.push_back(root->data);
+        inorder(root->right,arr);
+    }
   public:
     // Function to return a list of integers denoting the node
     // values of both the BST in a sorted order.
-    void storeTree(Node *root, vector<int>& tree){
-        if(!root) return;
-        storeTree(root->left,tree);
-        tree.push_back(root->data);
-        storeTree(root->right,tree);
+    /*
+    void help(Node *root1, Node *root2, vector<int> &ans){
+        if(!root1 && !root2) return;
+        if(!root2){
+            help(root1->left,root2,ans);
+            ans.push_back(root1->data);
+            help(root1->right,root2,ans);
+            return;
+        }
+        if(!root1){
+            help(root1,root2->left,ans);
+            ans.push_back(root2->data);
+            help(root1->,root2->right,ans);
+            return;
+        }
+        if(root1->data < root2->data){
+            
+        }
     }
+    */
     vector<int> merge(Node *root1, Node *root2) {
         // Your code here
-        vector<int> tree1, tree2;
-        storeTree(root1,tree1);
-        storeTree(root2,tree2);
-        int n = tree1.size(), m = tree2.size();
-        vector<int> ans;
-        int i=0, j=0;
-        while(i<n && j<m){
-            if(tree1[i]<=tree2[j]){
+        vector<int> ans, tree1, tree2;
+        inorder(root1, tree1);
+        inorder(root2, tree2);
+        int i = 0, j = 0;
+        while(i<tree1.size() && j<tree2.size()){
+            if(tree1[i]<tree2[j]){
                 ans.push_back(tree1[i++]);
             }
-            else if(tree1[i]>tree2[j]){
-                ans.push_back(tree2[j++]);
-            }
+            else ans.push_back(tree2[j++]);
         }
-        while(i<n) ans.push_back(tree1[i++]);
-        while(j<m) ans.push_back(tree2[j++]);
+        while(i<tree1.size()) ans.push_back(tree1[i++]);
+        while(j<tree2.size()) ans.push_back(tree2[j++]);
         return ans;
     }
 };
