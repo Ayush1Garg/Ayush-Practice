@@ -1,6 +1,7 @@
 class Solution {
 public:
     vector<int> smallestRange(vector<vector<int>>& nums) {
+        ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
         // Min-Heap: stores (value, list index, element index)
         priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> minHeap;
         int curMax = numeric_limits<int>::min();
