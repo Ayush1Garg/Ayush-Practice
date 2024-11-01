@@ -1,25 +1,14 @@
 class Solution {
 public:
     string makeFancyString(string s) {
-        ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
-        string ans = "";
-        char last = s[0];
-        ans += s[0];
-        int count = 1, i = 1;
-        while(i<s.size()){
-            if(i>0 && s[i]==s[i-1]){
-                i++;
-                if(count>=2) continue;
-                count++;
-                ans += last;
-            }
-            else{
-                last = s[i];
-                i++;
-                ans+= last;
-                count = 1;
-            }
-        }
-        return ans;
+    if(s.length()<3) {
+        return s;
     }
+    int j = 2;
+    for (int i = 2; i < s.size(); ++i)
+        if (s[i] != s[j - 1] || s[i] != s[j - 2])
+            s[j++] = s[i];
+    s.resize(j);
+    return s;
+}
 };
