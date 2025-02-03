@@ -14,6 +14,7 @@ public:
         }
     }
     string longestPalindrome(string s) {
+        ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
         for (int i = 0; i < s.size(); i++) {
             expand(i, i, s);
             expand(i, i + 1, s);
