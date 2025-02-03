@@ -1,30 +1,20 @@
 class Solution {
 public:
-    void generator(int &open, int &closed, int n, vector<string> &ans, string& pattern){
-        if(closed==n){
-            ans.push_back(pattern);
-            return;
-        }
-        if(open<n){
-            pattern.push_back('(');
-            open++;
-            generator(open,closed,n,ans,pattern);
-            open--;
-            pattern.pop_back();
-        }
-        if(closed<open){
-            pattern.push_back(')');
-            closed++;
-            generator(open,closed,n,ans,pattern);
-            pattern.pop_back();
-            closed--;
-        }
-    }
     vector<string> generateParenthesis(int n) {
-        vector<string> ans;
-        int open = 0, close = 0;
-        string pattern = "";
-        generator(open,close,n,ans,pattern);
-        return ans;
+        vector<vector<string>> dp;
+        dp.push_back({""});
+        dp.push_back({"()"});
+        for(int i = 2; i<=n; i++){
+            vector<string> temp;
+            for(int j=0; j<i; j++){
+                for(auto& inPattern : dp[j]){
+                    for(auto& outPattern : dp[i-j-1]){
+                        temp.push_back("(" + inPattern + ")" + outPattern);
+                    }
+                }
+            }
+            dp.push_back(temp);
+        }
+        return dp[n];
     }
 };
